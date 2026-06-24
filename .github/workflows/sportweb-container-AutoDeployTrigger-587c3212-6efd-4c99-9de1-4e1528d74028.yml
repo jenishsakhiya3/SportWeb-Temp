@@ -34,7 +34,7 @@ jobs:
           appSourcePath: ${{ github.workspace }}
           
           # IMPORTANT: Replace YOUR_REGISTRY_NAME with your actual ACR name
-          registryUrl: YOUR_REGISTRY_NAME.azurecr.io
+          registryUrl: sportregistry.azurecr.io
           
           registryUsername: ${{ secrets.SPORTWEBCONTAINER_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.SPORTWEBCONTAINER_REGISTRY_PASSWORD }}
@@ -42,4 +42,4 @@ jobs:
           resourceGroup: SportEastAsia
           
           # IMPORTANT: Make sure this URL matches the registryUrl above
-          imageToBuild: YOUR_REGISTRY_NAME.azurecr.io/sportweb-container:${{ github.sha }}
+          imageToBuild: sportregistry.azurecr.io/sportweb-container:${{ github.sha }}
