@@ -1,7 +1,8 @@
-import { Component, inject, OnInit, signal, computed, ElementRef, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, ElementRef, ViewChild, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, finalize, of, Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 interface ApiCall {
   id: number;
@@ -1178,8 +1179,14 @@ export class DashboardComponent implements OnInit {
 
   @ViewChild('terminalBody') private terminalBody!: ElementRef;
 
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
   ngOnInit() {
-    this.pingServer();
+    if (isPlatformBrowser(this.platformId)){
+      this.pingServer();
+    }
   }
 
   // Probe server connectivity
