@@ -8,7 +8,6 @@ on:
       [ main ]
     paths:
     - '**'
-    - '.github/workflows/sportweb-containerapp-AutoDeployTrigger-a243d8c4-4fae-4574-a438-e96dd0ebaa34.yml'
 
   # Allow manual trigger 
   workflow_dispatch:      
@@ -35,15 +34,9 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }}
-          _dockerfilePathKey_: _dockerfilePath_
-          _targetLabelKey_: _targetLabel_
-          registryUrl: 
+          registryUrl: sportregistry.azurecr.io
           registryUsername: ${{ secrets.SPORTWEBCONTAINERAPP_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.SPORTWEBCONTAINERAPP_REGISTRY_PASSWORD }}
           containerAppName: sportweb-containerapp
           resourceGroup: SportEastAsia
-          imageToBuild: default/[parameters('containerAppName')]:${{ github.sha }}
-          _buildArgumentsKey_: |
-            _buildArgumentsValues_
-
-
+          imageToBuild: sportregistry.azurecr.io/sportweb-containerapp:${{ github.sha }}
