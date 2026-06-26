@@ -1196,7 +1196,7 @@ export class DashboardComponent implements OnInit {
     this.checkingServer.set(true);
     this.addLog('info', 'Probing C# server connection at http://localhost:5135...');
     
-    this.http.get(`${this.apiBaseUrl}/weatherforecast`)
+    this.http.get(`${this.apiBaseUrl}/sports`)
       .pipe(
         catchError(() => {
           return of(null);
@@ -1204,6 +1204,7 @@ export class DashboardComponent implements OnInit {
         finalize(() => this.checkingServer.set(false))
       )
       .subscribe((res) => {
+        debugger;
         if (res) {
           this.isServerOnline.set(true);
           this.addLog('success', 'Connection established. C# backend server is ONLINE.');
