@@ -842,7 +842,7 @@ interface LogLine {
 export class DashboardComponent implements OnInit {
   private http = inject(HttpClient);
 
-  readonly apiBaseUrl = signal<string>('https://sportapi-appservice-dev-grcjhmdsergahuhp.koreacentral-01.azurewebsites.net');
+  readonly apiBaseUrl = 'https://sportapi-appservice-dev-grcjhmdsergahuhp.koreacentral-01.azurewebsites.net';
 
   // Endpoint Definitions
   readonly apiCalls = signal<ApiCall[]>([
@@ -1196,7 +1196,7 @@ export class DashboardComponent implements OnInit {
     this.checkingServer.set(true);
     this.addLog('info', 'Probing C# server connection at http://localhost:5135...');
     
-    this.http.get(`${this.apiBaseUrl}/sports`)
+    this.http.get(`${this.apiBaseUrl}/api/diagnostics/db-check`)
       .pipe(
         catchError(() => {
           return of(null);
