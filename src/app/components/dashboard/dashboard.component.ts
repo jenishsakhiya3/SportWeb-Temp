@@ -124,7 +124,7 @@ interface LogLine {
                 <span class="http-method-badge" [class]="call.method.toLowerCase()">
                   {{ call.method }}
                 </span>
-                <span class="endpoint-path">{{ call.endpoint }}</span>
+                <span class="endpoint-path">{{ targetUrl }}</span>
                 
                 <span class="api-name">{{ call.name }}</span>
                 
@@ -152,7 +152,7 @@ interface LogLine {
                 <div class="details-section">
                   <h4>Request Info</h4>
                   <div class="details-meta">
-                    <strong>URL:</strong> <code>http://localhost:5135{{ call.endpoint }}</code><br>
+                    <strong>URL:</strong> <code>http://localhost:5135{{ targetUrl }}</code><br>
                     <strong>Database Delay:</strong> <code>{{ call.delayMs }}ms</code>
                   </div>
                   <div class="code-block" *ngIf="call.payload">
@@ -842,6 +842,8 @@ interface LogLine {
 export class DashboardComponent implements OnInit {
   private http = inject(HttpClient);
 
+  readonly apiBaseUrl = signal<string>('https://sportapi-appservice-dev-grcjhmdsergahuhp.koreacentral-01.azurewebsites.net');
+
   // Endpoint Definitions
   readonly apiCalls = signal<ApiCall[]>([
     {
@@ -1194,7 +1196,7 @@ export class DashboardComponent implements OnInit {
     this.checkingServer.set(true);
     this.addLog('info', 'Probing C# server connection at http://localhost:5135...');
     
-    this.http.get('/weatherforecast')
+    this.http.get(`${this.apiBaseUrl}/weatherforecast`)
       .pipe(
         catchError(() => {
           return of(null);
@@ -1229,19 +1231,21 @@ export class DashboardComponent implements OnInit {
       c.id === call.id ? { ...c, loading: true, status: undefined, statusText: undefined, duration: undefined } : c
     ));
 
-    this.addLog('info', `Firing request: <strong style="color:var(--accent-blue)">${call.method}</strong> ${call.endpoint}`);
+    const targetUrl = `${this.apiBaseUrl}${call.endpoint}`;
+
+    this.addLog('info', `Firing request: <strong style="color:var(--accent-blue)">${call.method}</strong> ${targetUrl}`);
 
     const startTime = performance.now();
     let requestObservable: Observable<any>;
 
     if (call.method === 'GET') {
-      requestObservable = this.http.get(call.endpoint);
+      requestObservable = this.http.get(targetUrl);
     } else if (call.method === 'POST') {
-      requestObservable = this.http.post(call.endpoint, call.payload);
+      requestObservable = this.http.post(targetUrl, call.payload);
     } else if (call.method === 'PUT') {
-      requestObservable = this.http.put(call.endpoint, call.payload);
+      requestObservable = this.http.put(targetUrl, call.payload);
     } else if (call.method === 'DELETE') {
-      requestObservable = this.http.delete(call.endpoint);
+      requestObservable = this.http.delete(targetUrl);
     } else {
       requestObservable = of(null);
     }
@@ -1271,7 +1275,7 @@ export class DashboardComponent implements OnInit {
           statusText = response.statusText || 'Error';
           responseBody = response.error || null;
           
-          this.addLog('error', `Request failed: <strong style="color:var(--accent-red)">${call.method}</strong> ${call.endpoint} -> ${status} ${statusText} (${duration}ms)`);
+          this.addLog('error', `Request failed: <strong style="color:var(--accent-red)">${call.method}</strong> ${targetUrl} -> ${status} ${statusText} (${duration}ms)`);
         } else {
           // Angular defaults POST to 201 Created or 200 depending on output
           if (call.method === 'POST') {
@@ -1282,7 +1286,7 @@ export class DashboardComponent implements OnInit {
             statusText = 'No Content';
           }
           
-          this.addLog('success', `Request completed: <strong style="color:var(--accent-green)">${call.method}</strong> ${call.endpoint} -> ${status} ${statusText} (${duration}ms)`);
+          this.addLog('success', `Request completed: <strong style="color:var(--accent-green)">${call.method}</strong> ${targetUrl} -> ${status} ${statusText} (${duration}ms)`);
         }
 
         this.apiCalls.update(list => list.map(c => 
@@ -1328,17 +1332,19 @@ export class DashboardComponent implements OnInit {
           c.id === call.id ? { ...c, loading: true } : c
         ));
 
+        const targetUrl = `${this.apiBaseUrl}${call.endpoint}`;
+
         const startTime = performance.now();
         let requestObservable: Observable<any>;
 
         if (call.method === 'GET') {
-          requestObservable = this.http.get(call.endpoint);
+          requestObservable = this.http.get(targetUrl);
         } else if (call.method === 'POST') {
-          requestObservable = this.http.post(call.endpoint, call.payload);
+          requestObservable = this.http.post(targetUrl, call.payload);
         } else if (call.method === 'PUT') {
-          requestObservable = this.http.put(call.endpoint, call.payload);
+          requestObservable = this.http.put(targetUrl, call.payload);
         } else if (call.method === 'DELETE') {
-          requestObservable = this.http.delete(call.endpoint);
+          requestObservable = this.http.delete(targetUrl);
         } else {
           requestObservable = of(null);
         }
@@ -1364,7 +1370,7 @@ export class DashboardComponent implements OnInit {
               status = response.status;
               statusText = response.statusText || 'Error';
               responseBody = response.error || null;
-              this.addLog('error', `[${i+1}/${totalCount}] ${call.method} ${call.endpoint} -> ${status} ${statusText} (${duration}ms)`);
+              this.addLog('error', `[${i+1}/${totalCount}] ${call.method} ${targetUrl} -> ${status} ${statusText} (${duration}ms)`);
             } else {
               if (call.method === 'POST') {
                 status = 201;
@@ -1373,7 +1379,7 @@ export class DashboardComponent implements OnInit {
                 status = 204;
                 statusText = 'No Content';
               }
-              this.addLog('success', `[${i+1}/${totalCount}] ${call.method} ${call.endpoint} -> ${status} ${statusText} (${duration}ms)`);
+              this.addLog('success', `[${i+1}/${totalCount}] ${call.method} ${targetUrl} -> ${status} ${statusText} (${duration}ms)`);
             }
 
             this.apiCalls.update(list => list.map(c => 
