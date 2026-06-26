@@ -124,7 +124,7 @@ interface LogLine {
                 <span class="http-method-badge" [class]="call.method.toLowerCase()">
                   {{ call.method }}
                 </span>
-                <span class="endpoint-path">{{ targetUrl }}</span>
+                <span class="endpoint-path">{{ call.endpoint }}</span>
                 
                 <span class="api-name">{{ call.name }}</span>
                 
@@ -152,7 +152,7 @@ interface LogLine {
                 <div class="details-section">
                   <h4>Request Info</h4>
                   <div class="details-meta">
-                    <strong>URL:</strong> <code>http://localhost:5135{{ targetUrl }}</code><br>
+                    <strong>URL:</strong> <code>http://localhost:5135{{ call.endpoint }}</code><br>
                     <strong>Database Delay:</strong> <code>{{ call.delayMs }}ms</code>
                   </div>
                   <div class="code-block" *ngIf="call.payload">
