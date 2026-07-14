@@ -1150,6 +1150,17 @@ export class DashboardComponent implements OnInit {
       description: 'Fetch counts summary of sports data objects',
       loading: false,
       expanded: false
+    },
+    {
+      id: 23,
+      label: '20',
+      name: 'GET Dashboard Summary',
+      method: 'GET',
+      endpoint: '/api/storage/check/tempContainer',
+      delayMs: 1000,
+      description: 'Fetch counts summary of sports data objects',
+      loading: false,
+      expanded: false
     }
   ]);
 
