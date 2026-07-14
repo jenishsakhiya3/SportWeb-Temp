@@ -842,7 +842,7 @@ interface LogLine {
 export class DashboardComponent implements OnInit {
   private http = inject(HttpClient);
 
-  readonly apiBaseUrl = 'https://sportapi-appservice-dev-grcjhmdsergahuhp.koreacentral-01.azurewebsites.net';
+  readonly apiBaseUrl = 'https://sport-api-aeadechabcctegae.eastasia-01.azurewebsites.net';
 
   
   // Endpoint Definitions
