@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, finalize, of, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { env } from 'process';
+import { environment } from '../../../environments';
 
 interface ApiCall {
   id: number;
@@ -843,7 +843,7 @@ interface LogLine {
 export class DashboardComponent implements OnInit {
   private http = inject(HttpClient);
 
-  readonly apiBaseUrl = env['apiBaseUrl'];
+  readonly apiBaseUrl = 'https://spoer-api-hcgyfjfxcwhgeebt.eastasia-01.azurewebsites.net';
 
   
   // Endpoint Definitions
