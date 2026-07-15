@@ -1216,7 +1216,6 @@ export class DashboardComponent implements OnInit {
         finalize(() => this.checkingServer.set(false))
       )
       .subscribe((res) => {
-        debugger;
         if (res) {
           this.isServerOnline.set(true);
           this.addLog('success', 'Connection established. C# backend server is ONLINE.');
