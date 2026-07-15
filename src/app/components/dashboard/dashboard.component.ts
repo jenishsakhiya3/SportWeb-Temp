@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, finalize, of, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { environment } from '../../../environments';
 
 interface ApiCall {
   id: number;
