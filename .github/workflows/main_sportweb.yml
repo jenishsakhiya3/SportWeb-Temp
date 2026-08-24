@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read #This is required for actions/checkout
 
@@ -28,7 +28,7 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
-      
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -51,13 +51,13 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2863EE75429F40BF966930B24F764027 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_567C22CF10904C7E90B5583728FE544D }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A72D7CAE404D4ACFA2146311F9190E82 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5FDE9ADC1B844C6B9B08C499B618DA7A }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4096D893E6994D978034127A9F964905 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1598049F22A6472282350301A55263AC }}
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'SportWeb'
           slot-name: 'Production'
